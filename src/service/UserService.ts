@@ -25,7 +25,7 @@ export class UserService extends Service {
     super(User)
   }
 
-  async createUser({ email, name, password }: ICreateUser) {
+  async create({ email, name, password }: ICreateUser) {
     if (!email) {
       throw new Error('Invalid Emails')
     }

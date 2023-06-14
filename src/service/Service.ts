@@ -11,8 +11,8 @@ export class Service {
   }
 
   async getAll() {
-    const allItems = await this.repository.find()
-    return allItems
+    const items = await this.repository.find()
+    return items
   }
 
   async delete(id: number) {

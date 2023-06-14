@@ -21,7 +21,7 @@ export class UserController {
 
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body
-    const user = await userService.createUser({
+    const user = await userService.create({
       name,
       email,
       password,
