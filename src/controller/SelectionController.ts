@@ -16,4 +16,16 @@ export class SelectionController {
     }
     return res.json(result)
   }
+
+  async selectNft(req: AuthenticatedRequest, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const { nftId } = req.body
+    const { userId } = req
+    const selection = await selectionService.selectNft({
+      nftId,
+      selectionId,
+      userId,
+    })
+    return res.json(selection)
+  }
 }
