@@ -16,6 +16,12 @@ export class Nft {
   @Column()
   name: string
 
+  @Column()
+  contract_address: string
+
+  @Column()
+  token_id: string
+
   @ManyToMany(() => Selection, (selection) => selection.nfts)
   selections: Selection[]
 

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { fetchCollectionNfts } from '../utils/opensea'
+import { paginateCollectionNfts } from '../utils/opensea'
 
 export class OpenseaController {
   async listCollectionNfts(req: Request, res: Response) {
     const { slug } = req.params
-    const nfts = await fetchCollectionNfts(slug)
-    console.log('nfts:', nfts)
+    const { cursor } = req.query
+    const nfts = await paginateCollectionNfts(slug, cursor && String(cursor))
     return res.json(nfts)
   }
 }
