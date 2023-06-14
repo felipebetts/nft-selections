@@ -4,6 +4,7 @@ import { OpenseaController } from './controller/OpenseaController'
 import { SelectionController } from './controller/SelectionController'
 import { authProtection } from './middleware/auth'
 import { NftController } from './controller/NftController'
+import 'express-async-errors'
 
 const userController = new UserController()
 const openseaController = new OpenseaController()
@@ -26,5 +27,10 @@ router.post('/nfts', authProtection, nftController.createNft)
 router.get('/nfts/collection/:slug', openseaController.listCollectionNfts)
 
 router.post('/selections', authProtection, selectionController.createSelection)
+router.post(
+  '/selections/:selectionId/select-nft',
+  authProtection,
+  selectionController.selectNft
+)
 
 export default router
