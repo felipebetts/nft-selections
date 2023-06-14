@@ -12,4 +12,9 @@ export class NftController {
     })
     return res.json(nft)
   }
+
+  async listNfts(req: Request, res: Response) {
+    const nfts = await nftService.getAll()
+    return res.json(nfts)
+  }
 }
