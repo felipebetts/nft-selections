@@ -9,12 +9,7 @@ export class SelectionController {
     const { name } = req.body
     const { userId } = req
     const selection = await selectionService.create({ name, userId })
-    const result = {
-      name,
-      userId,
-      selection,
-    }
-    return res.json(result)
+    return res.json(selection)
   }
 
   async selectNft(req: AuthenticatedRequest, res: Response) {

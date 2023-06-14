@@ -2,6 +2,7 @@ import { AppDataSource } from '../data-source'
 import { Nft } from '../entity/Nft'
 import { Selection } from '../entity/Selection'
 import { User } from '../entity/User'
+import { InvalidAuthError } from '../utils/errors'
 import { Service } from './Service'
 
 interface ICreateSelection {
@@ -47,6 +48,10 @@ export class SelectionService extends Service {
     const nftRepository = AppDataSource.getRepository(Nft)
     const selection = await this.selectionRepository.findOne({
       where: { id: selectionId },
+      relations: {
+        nfts: true,
+        user: true,
+      },
     })
     const user = await userRepository.findOne({ where: { id: userId } })
     const nft = await nftRepository.findOne({ where: { id: nftId } })
@@ -58,7 +63,19 @@ export class SelectionService extends Service {
       throw new Error('Dados do nft invalidos')
     }
 
-    selection.nfts = [nft]
+    if (selection.user.id !== user.id) {
+      console.log('selection.user:', selection.user)
+      console.log('user:', user)
+      throw new InvalidAuthError()
+    }
+
+    const selectionNftsIds = selection.nfts.map((item) => item.id)
+
+    if (selectionNftsIds.includes(nft.id)) {
+      throw new Error('Nft ja esta na selecao')
+    }
+
+    selection.nfts = [...selection.nfts, nft]
     await this.selectionRepository.save(selection)
 
     return selection
