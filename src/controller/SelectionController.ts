@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { AuthenticatedRequest } from '../middleware/auth'
 import { SelectionService } from '../service/SelectionService'
 
@@ -27,5 +27,11 @@ export class SelectionController {
       userId,
     })
     return res.json(selection)
+  }
+
+  async listSelectionNfts(req: Request, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const nfts = await selectionService.listSelectionNfts(selectionId)
+    return res.json(nfts)
   }
 }

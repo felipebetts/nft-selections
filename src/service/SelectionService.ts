@@ -63,4 +63,18 @@ export class SelectionService extends Service {
 
     return selection
   }
+
+  async listSelectionNfts(selectionId: number) {
+    const selection = await this.selectionRepository.findOne({
+      where: { id: selectionId },
+      relations: {
+        nfts: true,
+      },
+    })
+    if (!selection) {
+      throw new Error('Selecao invalida')
+    }
+
+    return selection.nfts
+  }
 }
