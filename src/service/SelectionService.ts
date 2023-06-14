@@ -1,10 +1,18 @@
 import { AppDataSource } from '../data-source'
+import { Nft } from '../entity/Nft'
 import { Selection } from '../entity/Selection'
 import { User } from '../entity/User'
+import { InvalidAuthError } from '../utils/errors'
 import { Service } from './Service'
 
 interface ICreateSelection {
   name: string
+  userId: number
+}
+
+interface ISelectNft {
+  nftId: number
+  selectionId: number
   userId: number
 }
 
@@ -15,6 +23,10 @@ export class SelectionService extends Service {
   }
 
   async create({ name, userId }: ICreateSelection) {
+    if (!name) {
+      throw new Error('Invalid name')
+    }
+
     const userRepository = AppDataSource.getRepository(User)
     const user = await userRepository.findOne({ where: { id: userId } })
     console.log('user:', user)
@@ -29,5 +41,57 @@ export class SelectionService extends Service {
     await this.selectionRepository.save(selection)
 
     return selection
+  }
+
+  async selectNft({ nftId, selectionId, userId }: ISelectNft) {
+    const userRepository = AppDataSource.getRepository(User)
+    const nftRepository = AppDataSource.getRepository(Nft)
+    const selection = await this.selectionRepository.findOne({
+      where: { id: selectionId },
+      relations: {
+        nfts: true,
+        user: true,
+      },
+    })
+    const user = await userRepository.findOne({ where: { id: userId } })
+    const nft = await nftRepository.findOne({ where: { id: nftId } })
+
+    if (!selection || !user || !nft) {
+      console.log('selection:', selection)
+      console.log('user:', user)
+      console.log('nft:', nft)
+      throw new Error('Dados do nft invalidos')
+    }
+
+    if (selection.user.id !== user.id) {
+      console.log('selection.user:', selection.user)
+      console.log('user:', user)
+      throw new InvalidAuthError()
+    }
+
+    const selectionNftsIds = selection.nfts.map((item) => item.id)
+
+    if (selectionNftsIds.includes(nft.id)) {
+      throw new Error('Nft ja esta na selecao')
+    }
+
+    selection.nfts = [...selection.nfts, nft]
+    await this.selectionRepository.save(selection)
+
+    return selection
+  }
+
+  async listSelectionNfts(selectionId: number) {
+    const selection = await this.selectionRepository.findOne({
+      where: { id: selectionId },
+      relations: {
+        nfts: true,
+      },
+    })
+    if (!selection) {
+      throw new Error('Selecao invalida')
+    }
+
+    return selection.nfts
   }
 }

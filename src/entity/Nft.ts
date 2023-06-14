@@ -22,7 +22,7 @@ export class Nft {
   @Column()
   token_id: string
 
-  @ManyToMany(() => Selection, (selection) => selection.nfts)
+  @ManyToMany(() => Selection, (selection) => selection.nfts, { cascade: true })
   selections: Selection[]
 
   @CreateDateColumn()

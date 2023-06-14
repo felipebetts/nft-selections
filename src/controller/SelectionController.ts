@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { AuthenticatedRequest } from '../middleware/auth'
 import { SelectionService } from '../service/SelectionService'
 
@@ -9,11 +9,24 @@ export class SelectionController {
     const { name } = req.body
     const { userId } = req
     const selection = await selectionService.create({ name, userId })
-    const result = {
-      name,
+    return res.json(selection)
+  }
+
+  async selectNft(req: AuthenticatedRequest, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const { nftId } = req.body
+    const { userId } = req
+    const selection = await selectionService.selectNft({
+      nftId,
+      selectionId,
       userId,
-      selection,
-    }
-    return res.json(result)
+    })
+    return res.json(selection)
+  }
+
+  async listSelectionNfts(req: Request, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const nfts = await selectionService.listSelectionNfts(selectionId)
+    return res.json(nfts)
   }
 }

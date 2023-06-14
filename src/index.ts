@@ -1,9 +1,8 @@
 import { AppDataSource } from './data-source'
-import { User } from './entity/User'
-import express from 'express'
 import cors from 'cors'
 import router from './routes'
 import { errorTreatment } from './middleware/error'
+import express from 'express'
 
 const main = async () => {
   await AppDataSource.initialize()
