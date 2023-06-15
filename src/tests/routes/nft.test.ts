@@ -18,6 +18,10 @@ describe('nft routes', () => {
     token_id: '9888',
   }
 
+  const createUser = async () => {
+    const { body } = await request(app).post('/users').send(userData)
+    userId = body.id
+  }
   const login = async () => {
     const loginData = {
       email: 'thor@avengers.com',
@@ -26,15 +30,17 @@ describe('nft routes', () => {
     const { body } = await request(app).post('/users/auth').send(loginData)
     accessToken = body.accessToken
   }
+  const deleteUser = async () => {
+    await request(app).delete(`/users/${userId}`)
+  }
 
   beforeAll(async () => {
     await AppDataSource.initialize()
-    const { body } = await request(app).post('/users').send(userData)
-    userId = body.id
+    await createUser()
     await login()
   })
   afterAll(async () => {
-    await request(app).delete(`/users/${userId}`)
+    await deleteUser()
   })
 
   test('should not create nft if no auth', async () => {

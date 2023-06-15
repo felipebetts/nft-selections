@@ -2,7 +2,7 @@ import app from '../../app'
 import { AppDataSource } from '../../data-source'
 import request from 'supertest'
 
-describe('user routes', () => {
+describe('selection routes', () => {
   let userId: number
   let accessToken: string
   let selectionId: number
@@ -22,6 +22,10 @@ describe('user routes', () => {
     token_id: '9888',
   }
 
+  const createUser = async () => {
+    const { body } = await request(app).post('/users').send(userData)
+    userId = body.id
+  }
   const login = async () => {
     const loginData = {
       email: 'thor@avengers.com',
@@ -29,6 +33,9 @@ describe('user routes', () => {
     }
     const { body } = await request(app).post('/users/auth').send(loginData)
     accessToken = body.accessToken
+  }
+  const deleteUser = async () => {
+    await request(app).delete(`/users/${userId}`)
   }
 
   const createNft = async () => {
@@ -46,14 +53,13 @@ describe('user routes', () => {
 
   beforeAll(async () => {
     await AppDataSource.initialize()
-    const { body } = await request(app).post('/users').send(userData)
-    userId = body.id
+    await createUser()
     await login()
     await createNft()
   })
   afterAll(async () => {
-    await request(app).delete(`/users/${userId}`)
     await deleteNft()
+    await deleteUser()
   })
 
   test('should not create selection if no auth', async () => {
@@ -68,24 +74,21 @@ describe('user routes', () => {
       .post('/selections')
       .send(selectionData)
       .set('Authorization', accessToken)
-    // console.log('body:', body)
-    // console.log('accessToken:', accessToken)
     expect(statusCode).toBe(200)
     selectionId = body.id
   })
 
   test('should not add nft to selection if no auth', async () => {
-    const { statusCode } = await request(app)
-      .post(`/selections/${selectionId}/select-nft`)
-      .send({ nftId })
+    const { statusCode } = await request(app).post(
+      `/selections/${selectionId}/select-nft/${nftId}`
+    )
 
     expect(statusCode).toBe(401)
   })
 
   test('should add nft to selection', async () => {
     const { body, statusCode } = await request(app)
-      .post(`/selections/${selectionId}/select-nft`)
-      .send({ nftId })
+      .post(`/selections/${selectionId}/select-nft/${nftId}`)
       .set('Authorization', accessToken)
 
     expect(statusCode).toBe(200)
