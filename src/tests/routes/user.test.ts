@@ -21,6 +21,11 @@ describe('user routes', () => {
     expect(response.statusCode).toBe(200)
   })
 
+  test('should list users', async () => {
+    const { body, statusCode } = await request(app).get('/users')
+    expect(statusCode).toBe(200)
+  })
+
   test('should login', async () => {
     const { statusCode, body } = await request(app).post('/users/auth').send({
       email: 'thor@avengers.com',
