@@ -29,4 +29,10 @@ export class SelectionController {
     const nfts = await selectionService.listSelectionNfts(selectionId)
     return res.json(nfts)
   }
+
+  async delete(req: Request, res: Response) {
+    const selectionId = Number(req.params.id)
+    await selectionService.delete(selectionId)
+    return res.status(204).end()
+  }
 }

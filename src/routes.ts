@@ -28,12 +28,13 @@ router.get('/nfts/collection/:slug', openseaController.listCollectionNfts)
 router.post('/nfts', authProtection, nftController.createNft)
 router.delete('/nfts/:id', authProtection, nftController.deleteNft)
 
+router.get('/selections/:selectionId', selectionController.listSelectionNfts)
 router.post('/selections', authProtection, selectionController.createSelection)
 router.post(
   '/selections/:selectionId/select-nft',
   authProtection,
   selectionController.selectNft
 )
-router.get('/selections/:selectionId', selectionController.listSelectionNfts)
+router.delete('/selections/:id', authProtection, selectionController.delete)
 
 export default router
