@@ -24,6 +24,15 @@ export class SelectionController {
     return res.json(selection)
   }
 
+  async deleteNftFromSelection(req: AuthenticatedRequest, res: Response) {
+    const { nftId, selectionId } = req.params
+    await selectionService.deleteNftFromSelection({
+      nftId: Number(nftId),
+      selectionId: Number(selectionId),
+    })
+    return res.status(204).end()
+  }
+
   async listSelectionNfts(req: Request, res: Response) {
     const selectionId = Number(req.params.selectionId)
     const nfts = await selectionService.listSelectionNfts(selectionId)

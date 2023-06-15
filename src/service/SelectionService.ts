@@ -16,6 +16,11 @@ interface ISelectNft {
   userId: number
 }
 
+interface IDeleteSelectionNft {
+  nftId: number
+  selectionId: number
+}
+
 export class SelectionService extends Service {
   private selectionRepository = AppDataSource.getRepository(Selection)
   constructor() {
@@ -79,6 +84,17 @@ export class SelectionService extends Service {
     await this.selectionRepository.save(selection)
 
     return selection
+  }
+
+  async deleteNftFromSelection({ nftId, selectionId }: IDeleteSelectionNft) {
+    const selection = await this.selectionRepository.findOne({
+      where: { id: selectionId },
+      relations: {
+        nfts: true,
+      },
+    })
+    selection.nfts = selection.nfts.filter((nft) => nft.id !== nftId)
+    await this.selectionRepository.save(selection)
   }
 
   async listSelectionNfts(selectionId: number) {

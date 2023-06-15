@@ -35,6 +35,11 @@ router.post(
   authProtection,
   selectionController.selectNft
 )
+router.delete(
+  '/selections/:selectionId/remove-nft/:nftId',
+  authProtection,
+  selectionController.deleteNftFromSelection
+)
 router.delete('/selections/:id', authProtection, selectionController.delete)
 
 export default router
