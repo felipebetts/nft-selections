@@ -13,14 +13,16 @@ describe('nft routes', () => {
     password: '1234',
   }
   const nftData = {
-    contract_address: '0x1a92f7381b9f03921564a437210bb9396471051c',
-    name: 'Cool Cat #9888',
+    contract_address: '0x1a92f7381b9f03921564a437210bb9396471050c',
     token_id: '9888',
   }
 
   const createUser = async () => {
     const { body } = await request(app).post('/users').send(userData)
     userId = body.id
+  }
+  const deleteUser = async () => {
+    await request(app).delete(`/users/${userId}`)
   }
   const login = async () => {
     const loginData = {
@@ -29,9 +31,6 @@ describe('nft routes', () => {
     }
     const { body } = await request(app).post('/users/auth').send(loginData)
     accessToken = body.accessToken
-  }
-  const deleteUser = async () => {
-    await request(app).delete(`/users/${userId}`)
   }
 
   beforeAll(async () => {
@@ -53,6 +52,7 @@ describe('nft routes', () => {
       .post('/nfts')
       .send(nftData)
       .set('Authorization', accessToken)
+    // console.log('should create nft item', body)
     expect(statusCode).toBe(200)
 
     const properties = [
@@ -79,6 +79,10 @@ describe('nft routes', () => {
     const { body, statusCode } = await request(app).get(
       `/nfts/collection/${slug}`
     )
+    // console.log(
+    //   'should return nft list from collection fethed from opensea api',
+    //   body
+    // )
     expect(statusCode).toBe(200)
     expect(body).toHaveProperty('next')
     expect(body).toHaveProperty('previous')
@@ -91,6 +95,7 @@ describe('nft routes', () => {
     const { body, statusCode } = await request(app).get(
       `/nfts/collection/${slug}?cursor=${nextAsset}`
     )
+    // console.log('should paginate assets from opensea api', body)
     expect(statusCode).toBe(200)
     expect(body).toHaveProperty('next')
     expect(body).toHaveProperty('previous')
@@ -103,9 +108,10 @@ describe('nft routes', () => {
   })
 
   test('should delete nft', async () => {
-    const { statusCode } = await request(app)
+    const { body, statusCode } = await request(app)
       .delete(`/nfts/${nftId}`)
       .set('Authorization', accessToken)
+    // console.log('should delete nft', body)
     expect(statusCode).toBe(204)
   })
 })

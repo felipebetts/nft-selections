@@ -16,9 +16,8 @@ describe('selection routes', () => {
     name: 'fast-and-curious',
   }
   const nftData = {
-    contract_address: '0x1a92f7381b9f03921564a437210bb9396471052c',
-    name: 'Cool Cat #9888',
-    token_id: '9888',
+    contract_address: '0x1a92f7381b9f03921564a437210bb9396471050c',
+    token_id: '9887',
   }
 
   const createUser = async () => {

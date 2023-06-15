@@ -4,10 +4,9 @@ const nftService = new NftService()
 
 export class NftController {
   async createNft(req: Request, res: Response) {
-    const { contract_address, name, token_id } = req.body
+    const { contract_address, token_id } = req.body
     const nft = await nftService.create({
       contract_address,
-      name,
       token_id,
     })
     return res.json(nft)

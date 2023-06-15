@@ -14,10 +14,16 @@ export class Nft {
   id: number
 
   @Column()
-  name: string
+  contract_address: string
 
   @Column()
-  contract_address: string
+  description: string
+
+  @Column()
+  image_url: string
+
+  @Column()
+  name: string
 
   @Column()
   token_id: string
