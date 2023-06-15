@@ -81,6 +81,12 @@ export class SelectionService extends Service {
   }
 
   async deleteNftFromSelection({ nftId, selectionId }: IDeleteSelectionNft) {
+    if (!nftId) {
+      throw new Error('Nft nao informado')
+    }
+    if (!selectionId) {
+      throw new Error('Selection nao informada')
+    }
     const selection = await this.selectionRepository.findOne({
       where: { id: selectionId },
       relations: {
