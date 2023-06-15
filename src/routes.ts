@@ -31,7 +31,7 @@ router.delete('/nfts/:id', authProtection, nftController.deleteNft)
 router.get('/selections/:selectionId', selectionController.listSelectionNfts)
 router.post('/selections', authProtection, selectionController.createSelection)
 router.post(
-  '/selections/:selectionId/select-nft',
+  '/selections/:selectionId/select-nft/:nftId',
   authProtection,
   selectionController.selectNft
 )
