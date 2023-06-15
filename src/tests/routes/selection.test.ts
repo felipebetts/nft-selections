@@ -7,17 +7,16 @@ describe('selection routes', () => {
   let accessToken: string
   let selectionId: number
   let nftId: number
-  let nextAsset: string
   const userData = {
-    name: 'thor',
-    email: 'thor@avengers.com',
+    name: 'spiderman',
+    email: 'spiderman@avengers.com',
     password: '1234',
   }
   const selectionData = {
     name: 'fast-and-curious',
   }
   const nftData = {
-    contract_address: '0x1a92f7381b9f03921564a437210bb9396471051c',
+    contract_address: '0x1a92f7381b9f03921564a437210bb9396471052c',
     name: 'Cool Cat #9888',
     token_id: '9888',
   }
@@ -28,7 +27,7 @@ describe('selection routes', () => {
   }
   const login = async () => {
     const loginData = {
-      email: 'thor@avengers.com',
+      email: 'spiderman@avengers.com',
       password: '1234',
     }
     const { body } = await request(app).post('/users/auth').send(loginData)
@@ -87,7 +86,7 @@ describe('selection routes', () => {
   })
 
   test('should add nft to selection', async () => {
-    const { body, statusCode } = await request(app)
+    const { body, statusCode } = await request(app) // { body, statusCode }
       .post(`/selections/${selectionId}/select-nft/${nftId}`)
       .set('Authorization', accessToken)
 
@@ -114,7 +113,7 @@ describe('selection routes', () => {
   })
 
   test('should remove nft from selection', async () => {
-    const { statusCode } = await request(app)
+    const { body, statusCode } = await request(app)
       .delete(`/selections/${selectionId}/remove-nft/${nftId}`)
       .set('Authorization', accessToken)
     expect(statusCode).toBe(204)
@@ -128,7 +127,7 @@ describe('selection routes', () => {
   })
 
   test('should delete selection', async () => {
-    const { statusCode } = await request(app)
+    const { body, statusCode } = await request(app)
       .delete(`/selections/${selectionId}`)
       .set('Authorization', accessToken)
     expect(statusCode).toBe(204)

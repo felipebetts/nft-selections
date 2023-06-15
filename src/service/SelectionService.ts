@@ -19,6 +19,7 @@ interface ISelectNft {
 interface IDeleteSelectionNft {
   nftId: number
   selectionId: number
+  userId: number
 }
 
 export class SelectionService extends Service {
@@ -80,7 +81,11 @@ export class SelectionService extends Service {
     return selection
   }
 
-  async deleteNftFromSelection({ nftId, selectionId }: IDeleteSelectionNft) {
+  async deleteNftFromSelection({
+    nftId,
+    selectionId,
+    userId,
+  }: IDeleteSelectionNft) {
     if (!nftId) {
       throw new Error('Nft nao informado')
     }
@@ -91,8 +96,12 @@ export class SelectionService extends Service {
       where: { id: selectionId },
       relations: {
         nfts: true,
+        user: true,
       },
     })
+    if (selection.user.id !== userId) {
+      throw new InvalidAuthError()
+    }
     selection.nfts = selection.nfts.filter((nft) => nft.id !== nftId)
     await this.selectionRepository.save(selection)
   }
