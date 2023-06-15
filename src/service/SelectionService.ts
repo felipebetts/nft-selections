@@ -34,7 +34,6 @@ export class SelectionService extends Service {
 
     const userRepository = AppDataSource.getRepository(User)
     const user = await userRepository.findOne({ where: { id: userId } })
-    console.log('user:', user)
     if (!user) {
       throw new Error('Invalid user')
     }
@@ -62,15 +61,10 @@ export class SelectionService extends Service {
     const nft = await nftRepository.findOne({ where: { id: nftId } })
 
     if (!selection || !user || !nft) {
-      console.log('selection:', selection)
-      console.log('user:', user)
-      console.log('nft:', nft)
       throw new Error('Dados do nft invalidos')
     }
 
     if (selection.user.id !== user.id) {
-      console.log('selection.user:', selection.user)
-      console.log('user:', user)
       throw new InvalidAuthError()
     }
 
