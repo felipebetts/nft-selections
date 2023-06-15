@@ -19,7 +19,7 @@ export class NftService extends Service {
       throw new Error('Nft invalido')
     }
     const nftAlreadyExists = await this.nftRepository.findOne({
-      where: { contract_address },
+      where: { contract_address, token_id },
     })
     if (nftAlreadyExists) {
       throw new Error('Nft ja existe')

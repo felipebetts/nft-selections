@@ -13,8 +13,7 @@ describe('nft routes', () => {
     password: '1234',
   }
   const nftData = {
-    contract_address: '0x1a92f7381b9f03921564a437210bb9396471051c',
-    name: 'Cool Cat #9888',
+    contract_address: '0x1a92f7381b9f03921564a437210bb9396471050c',
     token_id: '9888',
   }
 
