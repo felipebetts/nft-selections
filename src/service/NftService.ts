@@ -1,10 +1,10 @@
 import { AppDataSource } from '../data-source'
 import { Nft } from '../entity/Nft'
+import { detailNft } from '../utils/opensea'
 import { Service } from './Service'
 
 interface ICreateNft {
   contract_address: string
-  name: string
   token_id: string
 }
 
@@ -14,8 +14,8 @@ export class NftService extends Service {
     super(Nft)
   }
 
-  async create({ contract_address, name, token_id }: ICreateNft) {
-    if (!contract_address || !name || !token_id) {
+  async create({ contract_address, token_id }: ICreateNft) {
+    if (!contract_address || !token_id) {
       throw new Error('Nft invalido')
     }
     const nftAlreadyExists = await this.nftRepository.findOne({
@@ -25,8 +25,15 @@ export class NftService extends Service {
       throw new Error('Nft ja existe')
     }
 
+    const { name, description, image_url } = await detailNft(
+      contract_address,
+      token_id
+    )
+
     const nft = this.nftRepository.create({
       contract_address,
+      description,
+      image_url,
       name,
       token_id,
     })
