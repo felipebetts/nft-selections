@@ -16,6 +16,12 @@ interface ISelectNft {
   userId: number
 }
 
+interface IDeleteSelectionNft {
+  nftId: number
+  selectionId: number
+  userId: number
+}
+
 export class SelectionService extends Service {
   private selectionRepository = AppDataSource.getRepository(Selection)
   constructor() {
@@ -29,7 +35,6 @@ export class SelectionService extends Service {
 
     const userRepository = AppDataSource.getRepository(User)
     const user = await userRepository.findOne({ where: { id: userId } })
-    console.log('user:', user)
     if (!user) {
       throw new Error('Invalid user')
     }
@@ -57,15 +62,10 @@ export class SelectionService extends Service {
     const nft = await nftRepository.findOne({ where: { id: nftId } })
 
     if (!selection || !user || !nft) {
-      console.log('selection:', selection)
-      console.log('user:', user)
-      console.log('nft:', nft)
       throw new Error('Dados do nft invalidos')
     }
 
     if (selection.user.id !== user.id) {
-      console.log('selection.user:', selection.user)
-      console.log('user:', user)
       throw new InvalidAuthError()
     }
 
@@ -79,6 +79,31 @@ export class SelectionService extends Service {
     await this.selectionRepository.save(selection)
 
     return selection
+  }
+
+  async deleteNftFromSelection({
+    nftId,
+    selectionId,
+    userId,
+  }: IDeleteSelectionNft) {
+    if (!nftId) {
+      throw new Error('Nft nao informado')
+    }
+    if (!selectionId) {
+      throw new Error('Selection nao informada')
+    }
+    const selection = await this.selectionRepository.findOne({
+      where: { id: selectionId },
+      relations: {
+        nfts: true,
+        user: true,
+      },
+    })
+    if (selection.user.id !== userId) {
+      throw new InvalidAuthError()
+    }
+    selection.nfts = selection.nfts.filter((nft) => nft.id !== nftId)
+    await this.selectionRepository.save(selection)
   }
 
   async listSelectionNfts(selectionId: number) {

@@ -24,15 +24,22 @@ router.post('/users/auth/refresh_token', userController.refreshAccessToken)
 router.delete('/users/:id', userController.delete)
 
 router.get('/nfts', nftController.listNfts)
-router.post('/nfts', authProtection, nftController.createNft)
 router.get('/nfts/collection/:slug', openseaController.listCollectionNfts)
+router.post('/nfts', authProtection, nftController.createNft)
+router.delete('/nfts/:id', authProtection, nftController.deleteNft)
 
+router.get('/selections/:selectionId', selectionController.listSelectionNfts)
 router.post('/selections', authProtection, selectionController.createSelection)
 router.post(
-  '/selections/:selectionId/select-nft',
+  '/selections/:selectionId/select-nft/:nftId',
   authProtection,
   selectionController.selectNft
 )
-router.get('/selections/:selectionId', selectionController.listSelectionNfts)
+router.delete(
+  '/selections/:selectionId/remove-nft/:nftId',
+  authProtection,
+  selectionController.deleteNftFromSelection
+)
+router.delete('/selections/:id', authProtection, selectionController.delete)
 
 export default router

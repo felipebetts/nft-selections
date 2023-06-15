@@ -13,20 +13,37 @@ export class SelectionController {
   }
 
   async selectNft(req: AuthenticatedRequest, res: Response) {
-    const selectionId = Number(req.params.selectionId)
-    const { nftId } = req.body
+    const { selectionId, nftId } = req.params
     const { userId } = req
     const selection = await selectionService.selectNft({
-      nftId,
-      selectionId,
+      nftId: Number(nftId),
+      selectionId: Number(selectionId),
       userId,
     })
     return res.json(selection)
+  }
+
+  async deleteNftFromSelection(req: AuthenticatedRequest, res: Response) {
+    const { nftId, selectionId } = req.params
+    const { userId } = req
+
+    await selectionService.deleteNftFromSelection({
+      nftId: Number(nftId),
+      selectionId: Number(selectionId),
+      userId,
+    })
+    return res.status(204).end()
   }
 
   async listSelectionNfts(req: Request, res: Response) {
     const selectionId = Number(req.params.selectionId)
     const nfts = await selectionService.listSelectionNfts(selectionId)
     return res.json(nfts)
+  }
+
+  async delete(req: Request, res: Response) {
+    const selectionId = Number(req.params.id)
+    await selectionService.delete(selectionId)
+    return res.status(204).end()
   }
 }

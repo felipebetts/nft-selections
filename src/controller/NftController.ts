@@ -17,4 +17,10 @@ export class NftController {
     const nfts = await nftService.getAll()
     return res.json(nfts)
   }
+
+  async deleteNft(req: Request, res: Response) {
+    const id = Number(req.params.id)
+    await nftService.delete(id)
+    return res.status(204).end()
+  }
 }
