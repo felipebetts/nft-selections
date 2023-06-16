@@ -29,6 +29,10 @@ router.post('/nfts', authProtection, nftController.createNft)
 router.delete('/nfts/:id', authProtection, nftController.deleteNft)
 
 router.get('/selections/:selectionId', selectionController.listSelectionNfts)
+router.get(
+  '/selections/paginate/:selectionId',
+  selectionController.paginateSelectionNfts
+)
 router.post('/selections', authProtection, selectionController.createSelection)
 router.post(
   '/selections/:selectionId/select-nft/:nftId',

@@ -22,6 +22,11 @@ interface IDeleteSelectionNft {
   userId: number
 }
 
+interface IPaginateSelectionNfts {
+  selectionId: number
+  page?: number
+}
+
 export class SelectionService extends Service {
   private selectionRepository = AppDataSource.getRepository(Selection)
   constructor() {
@@ -61,7 +66,15 @@ export class SelectionService extends Service {
     const user = await userRepository.findOne({ where: { id: userId } })
     const nft = await nftRepository.findOne({ where: { id: nftId } })
 
-    if (!selection || !user || !nft) {
+    if (!selection) {
+      throw new Error('Dados da selection invalidos')
+    }
+
+    if (!user) {
+      throw new Error('Dados do user invalidos')
+    }
+
+    if (!nft) {
       throw new Error('Dados do nft invalidos')
     }
 
@@ -118,5 +131,27 @@ export class SelectionService extends Service {
     }
 
     return selection.nfts
+  }
+
+  async paginateSelectionNfts({
+    selectionId,
+    page = 1,
+  }: IPaginateSelectionNfts) {
+    const limit = 10
+    const skip = (page - 1) * limit
+    console.log('page:', page)
+    console.log('skip:', skip)
+    console.log('typeof skip:', typeof skip)
+    const query = this.selectionRepository
+      .createQueryBuilder('selection')
+      .leftJoinAndSelect('selection.nfts', 'nft')
+
+    const nfts = await query
+      .where('selection.id = :id', { id: selectionId })
+      .take(limit)
+      .skip(skip)
+      .getMany()
+
+    return nfts
   }
 }

@@ -4,6 +4,11 @@ import { SelectionService } from '../service/SelectionService'
 
 const selectionService = new SelectionService()
 
+interface IPaginateSelectionNfts {
+  selectionId: number
+  page?: number
+}
+
 export class SelectionController {
   async createSelection(req: AuthenticatedRequest, res: Response) {
     const { name } = req.body
@@ -38,6 +43,19 @@ export class SelectionController {
   async listSelectionNfts(req: Request, res: Response) {
     const selectionId = Number(req.params.selectionId)
     const nfts = await selectionService.listSelectionNfts(selectionId)
+    return res.json(nfts)
+  }
+
+  async paginateSelectionNfts(req: Request, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const paginationParams: IPaginateSelectionNfts = {
+      selectionId,
+    }
+    const { page } = req.query
+    if (page) {
+      paginationParams.page = Number(page)
+    }
+    const nfts = await selectionService.paginateSelectionNfts(paginationParams)
     return res.json(nfts)
   }
 
