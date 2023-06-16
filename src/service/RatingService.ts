@@ -2,12 +2,18 @@ import { AppDataSource } from '../data-source'
 import { Rating } from '../entity/Rating'
 import { Selection } from '../entity/Selection'
 import { User } from '../entity/User'
+import { InvalidAuthError } from '../utils/errors'
 import { Service } from './Service'
 
 interface ICreateUpdateRating {
   selectionId: number
   userId: number
   value: number
+}
+
+interface IDeleteRatingBySelection {
+  selectionId: number
+  userId: number
 }
 
 export class RatingService extends Service {
@@ -66,5 +72,37 @@ export class RatingService extends Service {
       throw new Error('Dados invalidos')
     }
     // todo
+  }
+
+  async deleteRatingBySelection({
+    selectionId,
+    userId,
+  }: IDeleteRatingBySelection) {
+    if (!userId || !selectionId) {
+      throw new Error('Dados fornecidos invalidos')
+    }
+
+    const rating = await this.ratingRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+        selection: {
+          id: selectionId,
+        },
+      },
+      relations: {
+        user: true,
+      },
+    })
+    if (!rating) {
+      throw new Error('Rating nao encontrada')
+    }
+
+    if (rating.user.id !== userId) {
+      throw new InvalidAuthError()
+    }
+
+    await this.ratingRepository.delete(rating.id)
   }
 }

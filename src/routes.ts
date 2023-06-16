@@ -49,5 +49,6 @@ router.delete(
 router.delete('/selections/:id', authProtection, selectionController.delete)
 
 router.post('/ratings/:selectionId', authProtection, ratingController.create)
+router.delete('/ratings/:selectionId', authProtection, ratingController.delete)
 
 export default router

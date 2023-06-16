@@ -12,4 +12,11 @@ export class RatingController {
     const rating = await ratingService.create({ selectionId, userId, value })
     return res.json(rating)
   }
+
+  async delete(req: AuthenticatedRequest, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const { userId } = req
+    await ratingService.deleteRatingBySelection({ selectionId, userId })
+    return res.status(204).end()
+  }
 }
