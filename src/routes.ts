@@ -5,11 +5,13 @@ import { SelectionController } from './controller/SelectionController'
 import { authProtection } from './middleware/auth'
 import { NftController } from './controller/NftController'
 import 'express-async-errors'
+import { RatingController } from './controller/RatingController'
 
 const userController = new UserController()
 const openseaController = new OpenseaController()
 const selectionController = new SelectionController()
 const nftController = new NftController()
+const ratingController = new RatingController()
 
 const router = Router()
 
@@ -45,5 +47,7 @@ router.delete(
   selectionController.deleteNftFromSelection
 )
 router.delete('/selections/:id', authProtection, selectionController.delete)
+
+router.post('/ratings/:selectionId', authProtection, ratingController.create)
 
 export default router
