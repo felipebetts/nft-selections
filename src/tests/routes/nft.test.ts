@@ -8,8 +8,8 @@ describe('nft routes', () => {
   let nftId: number
   let nextAsset: string
   const userData = {
-    name: 'thor',
-    email: 'thor@avengers.com',
+    name: 'antman',
+    email: 'antman@avengers.com',
     password: '1234',
   }
   const nftData = {
@@ -26,7 +26,7 @@ describe('nft routes', () => {
   }
   const login = async () => {
     const loginData = {
-      email: 'thor@avengers.com',
+      email: 'antman@avengers.com',
       password: '1234',
     }
     const { body } = await request(app).post('/users/auth').send(loginData)

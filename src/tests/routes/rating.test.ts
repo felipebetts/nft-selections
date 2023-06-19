@@ -6,10 +6,11 @@ describe('rating routes', () => {
   let userId: number
   let accessToken: string
   let selectionId: number
+  let ratingId: number
   const createUser = async () => {
     const userData = {
-      name: 'thor',
-      email: 'thor@avengers.com',
+      name: 'strange',
+      email: 'strange@avengers.com',
       password: '1234',
     }
     const { body } = await request(app).post('/users').send(userData)
@@ -20,7 +21,7 @@ describe('rating routes', () => {
   }
   const login = async () => {
     const loginData = {
-      email: 'thor@avengers.com',
+      email: 'strange@avengers.com',
       password: '1234',
     }
     const { body } = await request(app).post('/users/auth').send(loginData)
@@ -72,6 +73,12 @@ describe('rating routes', () => {
     expect(statusCode).toBe(200)
     console.log('rating body:', body)
   })
+
+  // test('should not update rating if no auth', async () => {
+  //   const { statusCode } = await request(app).put(`/ratings/`)
+  // })
+
+  // test('should update rating', async () => {})
 
   test('should not delete rating if no auth', async () => {
     const { statusCode } = await request(app).delete(`/ratings/${selectionId}`)
