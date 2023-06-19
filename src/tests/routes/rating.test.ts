@@ -85,6 +85,17 @@ describe('rating routes', () => {
     expect(statusCode).toBe(200)
   })
 
+  test('should detail selection ratings', async () => {
+    const { body, statusCode } = await request(app).get(
+      `/ratings/${selectionId}`
+    )
+    expect(statusCode).toBe(200)
+    const properties = ['amount', 'average']
+    properties.forEach((property) => {
+      expect(body).toHaveProperty(property)
+    })
+  })
+
   test('should not delete rating if no auth', async () => {
     const { statusCode } = await request(app).delete(`/ratings/${selectionId}`)
     expect(statusCode).toBe(401)
