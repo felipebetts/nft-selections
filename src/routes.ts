@@ -48,6 +48,7 @@ router.delete(
 )
 router.delete('/selections/:id', authProtection, selectionController.delete)
 
+router.get('/ratings/:selectionId', ratingController.selectionRating)
 router.post('/ratings/:selectionId', authProtection, ratingController.create)
 router.delete('/ratings/:selectionId', authProtection, ratingController.delete)
 router.put('/ratings/:selectionId', authProtection, ratingController.update)

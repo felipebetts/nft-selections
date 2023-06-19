@@ -22,6 +22,10 @@ interface IDeleteRatingBySelection {
   userId: number
 }
 
+// interface IDetailSelectionRating {
+//   selectionId: number
+// }
+
 export class RatingService extends Service {
   constructor() {
     super(Rating)
@@ -137,5 +141,26 @@ export class RatingService extends Service {
     }
 
     await this.ratingRepository.delete(rating.id)
+  }
+
+  async detailSelectionRating(selectionId: number) {
+    if (!selectionId) {
+      throw new Error('selection invalida')
+    }
+    const ratings = await this.ratingRepository.find({
+      where: {
+        selection: {
+          id: selectionId,
+        },
+      },
+    })
+    const ratingsValues = ratings.map((rating) => rating.value)
+    const average =
+      ratingsValues.reduce((acc, cur) => acc + cur) / ratingsValues.length
+    const details = {
+      amount: ratings.length,
+      average,
+    }
+    return details
   }
 }

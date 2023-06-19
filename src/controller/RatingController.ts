@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { AuthenticatedRequest } from '../middleware/auth'
 import { RatingService } from '../service/RatingService'
 
@@ -25,6 +25,12 @@ export class RatingController {
     const { userId } = req
     const { value } = req.body
     const rating = await ratingService.update({ selectionId, userId, value })
+    return res.json(rating)
+  }
+
+  async selectionRating(req: Request, res: Response) {
+    const selectionId = Number(req.params.selectionId)
+    const rating = await ratingService.detailSelectionRating(selectionId)
     return res.json(rating)
   }
 }
