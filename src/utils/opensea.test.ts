@@ -5,7 +5,6 @@ describe('detail nft opensea api call', () => {
     const contractAddress = '0x1a92f7381b9f03921564a437210bb9396471050c'
     const tokenId = '9888'
     const nft = await detailNft(contractAddress, tokenId)
-    console.log('nft:', nft)
     expect(nft).toBeDefined()
   })
 })

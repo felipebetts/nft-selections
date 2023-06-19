@@ -85,7 +85,7 @@ describe('selection routes', () => {
   })
 
   test('should add nft to selection', async () => {
-    const { body, statusCode } = await request(app) // { body, statusCode }
+    const { body, statusCode } = await request(app)
       .post(`/selections/${selectionId}/select-nft/${nftId}`)
       .set('Authorization', accessToken)
 
