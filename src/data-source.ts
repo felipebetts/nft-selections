@@ -6,8 +6,12 @@ import { Selection } from './entity/Selection'
 import { Rating } from './entity/Rating'
 
 export const AppDataSource = new DataSource({
-  type: 'sqlite',
-  database: 'database.sqlite',
+  type: 'mysql',
+  host: 'db',
+  database: 'nft-selections',
+  port: 3306,
+  username: 'admin',
+  password: 'password',
   synchronize: true,
   logging: false,
   entities: [User, Nft, Selection, Rating],
