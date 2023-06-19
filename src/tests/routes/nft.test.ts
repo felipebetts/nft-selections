@@ -52,7 +52,6 @@ describe('nft routes', () => {
       .post('/nfts')
       .send(nftData)
       .set('Authorization', accessToken)
-    // console.log('should create nft item', body)
     expect(statusCode).toBe(200)
 
     const properties = [
@@ -79,10 +78,6 @@ describe('nft routes', () => {
     const { body, statusCode } = await request(app).get(
       `/nfts/collection/${slug}`
     )
-    // console.log(
-    //   'should return nft list from collection fethed from opensea api',
-    //   body
-    // )
     expect(statusCode).toBe(200)
     expect(body).toHaveProperty('next')
     expect(body).toHaveProperty('previous')
@@ -95,7 +90,6 @@ describe('nft routes', () => {
     const { body, statusCode } = await request(app).get(
       `/nfts/collection/${slug}?cursor=${nextAsset}`
     )
-    // console.log('should paginate assets from opensea api', body)
     expect(statusCode).toBe(200)
     expect(body).toHaveProperty('next')
     expect(body).toHaveProperty('previous')
@@ -111,7 +105,6 @@ describe('nft routes', () => {
     const { body, statusCode } = await request(app)
       .delete(`/nfts/${nftId}`)
       .set('Authorization', accessToken)
-    // console.log('should delete nft', body)
     expect(statusCode).toBe(204)
   })
 })

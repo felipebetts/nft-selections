@@ -10,21 +10,10 @@ interface ICreateUpdateRating {
   userId: number
   value: number
 }
-
-// interface IUpdateRating {
-//   selectionId: number
-//   userId: number
-//   value: number
-// }
-
 interface IDeleteRatingBySelection {
   selectionId: number
   userId: number
 }
-
-// interface IDetailSelectionRating {
-//   selectionId: number
-// }
 
 export class RatingService extends Service {
   constructor() {
