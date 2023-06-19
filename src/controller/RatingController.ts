@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { AuthenticatedRequest } from '../middleware/auth'
 import { RatingService } from '../service/RatingService'
 
@@ -18,5 +18,13 @@ export class RatingController {
     const { userId } = req
     await ratingService.deleteRatingBySelection({ selectionId, userId })
     return res.status(204).end()
+  }
+
+  async update(req: AuthenticatedRequest, res: Response) {
+    const ratingId = Number(req.params.ratingId)
+    const { userId } = req
+    const { value } = req.body
+    const rating = await ratingService.update({ ratingId, userId, value })
+    return res.json(rating)
   }
 }

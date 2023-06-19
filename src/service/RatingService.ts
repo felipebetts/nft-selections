@@ -5,8 +5,14 @@ import { User } from '../entity/User'
 import { InvalidAuthError } from '../utils/errors'
 import { Service } from './Service'
 
-interface ICreateUpdateRating {
+interface ICreateRating {
   selectionId: number
+  userId: number
+  value: number
+}
+
+interface IUpdateRating {
+  ratingId: number
   userId: number
   value: number
 }
@@ -22,7 +28,7 @@ export class RatingService extends Service {
   }
   private ratingRepository = AppDataSource.getRepository(Rating)
 
-  async create({ selectionId, userId, value }: ICreateUpdateRating) {
+  async create({ selectionId, userId, value }: ICreateRating) {
     if (!selectionId || !userId || !value) {
       throw new Error('Dados invalidos')
     }
@@ -53,7 +59,8 @@ export class RatingService extends Service {
       },
     })
     if (userAlreadyRatedSelection) {
-      return this.update({ selectionId, userId, value })
+      const ratingId = userAlreadyRatedSelection.id
+      return this.update({ ratingId, userId, value })
     }
     console.log('userAlreadyRatedSelection:', userAlreadyRatedSelection)
 
@@ -67,11 +74,28 @@ export class RatingService extends Service {
     return rating
   }
 
-  async update({ selectionId, userId, value }: ICreateUpdateRating) {
-    if (!selectionId || !userId || !value) {
+  async update({ ratingId, userId, value }: IUpdateRating) {
+    if (!ratingId || !userId || !value) {
       throw new Error('Dados invalidos')
     }
-    // todo
+    if (value > 5 || value < 0) {
+      throw new Error('Valor da rating deve ser entre 0 e 5')
+    }
+    const rating = await this.ratingRepository.findOne({
+      where: { id: ratingId },
+      relations: {
+        user: true,
+      },
+    })
+    if (!rating) {
+      throw new Error('Rating nao encontrada')
+    }
+    if (rating.user.id !== userId) {
+      throw new InvalidAuthError()
+    }
+    rating.value = value
+    this.ratingRepository.save(rating)
+    return rating
   }
 
   async deleteRatingBySelection({
