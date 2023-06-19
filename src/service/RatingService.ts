@@ -5,17 +5,17 @@ import { User } from '../entity/User'
 import { InvalidAuthError } from '../utils/errors'
 import { Service } from './Service'
 
-interface ICreateRating {
+interface ICreateUpdateRating {
   selectionId: number
   userId: number
   value: number
 }
 
-interface IUpdateRating {
-  ratingId: number
-  userId: number
-  value: number
-}
+// interface IUpdateRating {
+//   selectionId: number
+//   userId: number
+//   value: number
+// }
 
 interface IDeleteRatingBySelection {
   selectionId: number
@@ -28,7 +28,7 @@ export class RatingService extends Service {
   }
   private ratingRepository = AppDataSource.getRepository(Rating)
 
-  async create({ selectionId, userId, value }: ICreateRating) {
+  async create({ selectionId, userId, value }: ICreateUpdateRating) {
     if (!selectionId || !userId || !value) {
       throw new Error('Dados invalidos')
     }
@@ -59,10 +59,9 @@ export class RatingService extends Service {
       },
     })
     if (userAlreadyRatedSelection) {
-      const ratingId = userAlreadyRatedSelection.id
-      return this.update({ ratingId, userId, value })
+      console.log('userAlreadyRatedSelection:', userAlreadyRatedSelection)
+      return this.update({ selectionId, userId, value })
     }
-    console.log('userAlreadyRatedSelection:', userAlreadyRatedSelection)
 
     const rating = this.ratingRepository.create({
       selection,
@@ -74,15 +73,25 @@ export class RatingService extends Service {
     return rating
   }
 
-  async update({ ratingId, userId, value }: IUpdateRating) {
-    if (!ratingId || !userId || !value) {
-      throw new Error('Dados invalidos')
+  async update({ selectionId, userId, value }: ICreateUpdateRating) {
+    if (!selectionId) {
+      throw new Error('selection invalida')
     }
-    if (value > 5 || value < 0) {
+    if (!userId) {
+      throw new Error('usuario invalido')
+    }
+    if (!value || value > 5 || value < 0) {
       throw new Error('Valor da rating deve ser entre 0 e 5')
     }
     const rating = await this.ratingRepository.findOne({
-      where: { id: ratingId },
+      where: {
+        user: {
+          id: userId,
+        },
+        selection: {
+          id: selectionId,
+        },
+      },
       relations: {
         user: true,
       },

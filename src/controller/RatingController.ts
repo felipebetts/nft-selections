@@ -21,10 +21,10 @@ export class RatingController {
   }
 
   async update(req: AuthenticatedRequest, res: Response) {
-    const ratingId = Number(req.params.ratingId)
+    const selectionId = Number(req.params.selectionId)
     const { userId } = req
     const { value } = req.body
-    const rating = await ratingService.update({ ratingId, userId, value })
+    const rating = await ratingService.update({ selectionId, userId, value })
     return res.json(rating)
   }
 }

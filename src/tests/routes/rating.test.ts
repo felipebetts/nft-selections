@@ -6,7 +6,6 @@ describe('rating routes', () => {
   let userId: number
   let accessToken: string
   let selectionId: number
-  let ratingId: number
   const createUser = async () => {
     const userData = {
       name: 'strange',
@@ -64,21 +63,27 @@ describe('rating routes', () => {
   })
 
   test('should create rating', async () => {
-    const { body, statusCode } = await request(app)
+    const { statusCode } = await request(app)
       .post(`/ratings/${selectionId}`)
       .send({
         value: 4,
       })
       .set('Authorization', accessToken)
     expect(statusCode).toBe(200)
-    console.log('rating body:', body)
   })
 
-  // test('should not update rating if no auth', async () => {
-  //   const { statusCode } = await request(app).put(`/ratings/`)
-  // })
+  test('should not update rating if no auth', async () => {
+    const { statusCode } = await request(app).put(`/ratings/${selectionId}`)
+    expect(statusCode).toBe(401)
+  })
 
-  // test('should update rating', async () => {})
+  test('should update rating', async () => {
+    const { body, statusCode } = await request(app)
+      .put(`/ratings/${selectionId}`)
+      .set('Authorization', accessToken)
+      .send({ value: 4.5 })
+    expect(statusCode).toBe(200)
+  })
 
   test('should not delete rating if no auth', async () => {
     const { statusCode } = await request(app).delete(`/ratings/${selectionId}`)
