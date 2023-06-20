@@ -1,0 +1,11 @@
+.PHONY: start
+start:
+	docker-compose -f docker/docker-compose.yml up
+
+.PHONY: stop
+stop:
+	docker-compose -f docker/docker-compose.yml down
+
+.PHONY: test
+test:
+	yarn test

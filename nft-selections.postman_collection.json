@@ -1,0 +1,343 @@
+{
+	"info": {
+		"_postman_id": "797789d2-8370-4841-9b0c-9d2af065b0e6",
+		"name": "nft-selections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "12491686"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"loki3\",\n    \"email\": \"loki3@wich.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrl}}/users/87"
+					},
+					"response": []
+				},
+				{
+					"name": "list users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"loki3@wich.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "refresh tokens",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY3NzQ0NjYsImV4cCI6MTY4Njg2MDg2Niwic3ViIjoiMSJ9.gYQ9ORo7YDI5wT1Zt20X6bRqbOlBylAfejvl0ncQcus\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/users/auth/refresh_token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "nft",
+			"item": [
+				{
+					"name": "list collection nfts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/nfts/collection/cool-cats-nft?cursor=LXBrPTMwMjQ4MTM5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"nfts",
+								"collection",
+								"cool-cats-nft"
+							],
+							"query": [
+								{
+									"key": "cursor",
+									"value": "LXBrPTMwMjQ4MTM5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create nft",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY4ODA4OTksImV4cCI6MTY4Njg4NDQ5OSwic3ViIjoiMjIifQ.5p2LFEYWaA8e9lhD0wQwXpQ4yUfMhgCmWoAt1kx7CgE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contract_address\": \"0x1a92f7381b9f03921564a437210bb9396471050c\",\n    \"token_id\": \"9882\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/nfts"
+					},
+					"response": []
+				},
+				{
+					"name": "list all nfts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/nfts"
+					},
+					"response": []
+				},
+				{
+					"name": "delete nft",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY3OTc1MjcsImV4cCI6MTY4NjgwMTEyNywic3ViIjoiMSJ9.mIuA1Ln-nlHg3BXTbtVnls1kXhBpKhb-VPopkKY2exY",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/nfts/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "selection",
+			"item": [
+				{
+					"name": "create nft selection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY4ODA1ODQsImV4cCI6MTY4Njg4NDE4NCwic3ViIjoiMjIifQ.iqe6IxUEsZK5Iotj4Coid_WzLC7a0pKbDEbX8J3RKW8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"teste selectionds\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/selections"
+					},
+					"response": []
+				},
+				{
+					"name": "select nft",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY4ODA4OTksImV4cCI6MTY4Njg4NDQ5OSwic3ViIjoiMjIifQ.5p2LFEYWaA8e9lhD0wQwXpQ4yUfMhgCmWoAt1kx7CgE",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/selections/9/select-nft/20"
+					},
+					"response": []
+				},
+				{
+					"name": "list selection nfts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/selections/1"
+					},
+					"response": []
+				},
+				{
+					"name": "delete nft selection",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY3OTk5MzgsImV4cCI6MTY4NjgwMzUzOCwic3ViIjoiMSJ9.ydaYXN8K551uezOPtXASDcCel77qwtGPdzSm1NYNrIk",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/selections/2"
+					},
+					"response": []
+				},
+				{
+					"name": "remove nft from selection",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY4NDI1ODQsImV4cCI6MTY4Njg0NjE4NCwic3ViIjoiMSJ9.V2HqeQPlBR8h_u1SCFN-BFV8XzeRlZr1r0RAh63n1z8",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/selections/1/remove-nft/1"
+					},
+					"response": []
+				},
+				{
+					"name": "paginate selection nfts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/selections/paginate/9"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "rating",
+			"item": [
+				{
+					"name": "create rating",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2kzQHdpY2guY29tIiwiaWF0IjoxNjg3MTg4MTA5LCJleHAiOjE2ODcxOTE3MDksInN1YiI6IjExMCJ9.DWz0qb5LB8BDc3ABGOtToWSrSlqFMaIXjoMOYnzH38c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/ratings/9"
+					},
+					"response": []
+				},
+				{
+					"name": "delete rating",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODY5Mjg0MTUsImV4cCI6MTY4NjkzMjAxNSwic3ViIjoiMjIifQ.h3JaXlsNv5A2z4_qNTYEYBD3odTxY8MD1XEwOHJ1I0c",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/ratings/9"
+					},
+					"response": []
+				},
+				{
+					"name": "update rating",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2lAd2ljaC5jb20iLCJpYXQiOjE2ODcxODUwODcsImV4cCI6MTY4NzE4ODY4Nywic3ViIjoiMjIifQ.Ce4mACorkOh7vYOiEWfk7gFzzCH7ifw4QFxm6x2i4WY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": 4.15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/ratings/9"
+					},
+					"response": []
+				},
+				{
+					"name": "detail selection rating",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/ratings/9"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "health_check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/health_check"
+			},
+			"response": []
+		}
+	]
+}
