@@ -52,7 +52,6 @@ export class RatingService extends Service {
       },
     })
     if (userAlreadyRatedSelection) {
-      console.log('userAlreadyRatedSelection:', userAlreadyRatedSelection)
       return this.update({ selectionId, userId, value })
     }
 
