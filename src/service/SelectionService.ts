@@ -139,9 +139,6 @@ export class SelectionService extends Service {
   }: IPaginateSelectionNfts) {
     const limit = 10
     const skip = (page - 1) * limit
-    console.log('page:', page)
-    console.log('skip:', skip)
-    console.log('typeof skip:', typeof skip)
     const query = this.selectionRepository
       .createQueryBuilder('selection')
       .leftJoinAndSelect('selection.nfts', 'nft')
