@@ -18,6 +18,10 @@ Para parar e destruir os containers, basta rodarmos o comando a seguir:
 
     make stop
 
+**Obs**: Se você estiver com problemas para rodar os comandos make, tente rodar com o `sudo` na frente (erro comum para usuários linux sem config do docker group). Ex:
+
+sudo make start
+
 ## Testes
 
 Criei testes para todas as rotas da aplicação utilizando jest. Isso facilitou o desenvolvimento e debugging.
